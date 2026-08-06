@@ -1,16 +1,20 @@
 function searchLocation() {
+    const input = document.getElementById("searchInput").value.trim().toLowerCase();
+    const result = document.getElementById("result");
 
-    let input = document.getElementById("searchInput").value.trim();
+    const found = locations.find(item =>
+        item.area.toLowerCase() === input
+    );
 
-    if(input === "") {
-        document.getElementById("result").innerHTML =
-        "<h3>⚠️ অনুগ্রহ করে একটি এলাকার নাম লিখুন।</h3>";
-        return;
+    if (found) {
+        result.innerHTML = `
+            <h3>Search Result</h3>
+            <p><b>Area:</b> ${found.area}</p>
+            <p><b>Thana:</b> ${found.thana}</p>
+            <p><b>District:</b> ${found.district}</p>
+            <p><b>Division:</b> ${found.division}</p>
+        `;
+    } else {
+        result.innerHTML = "<h3>❌ Location not found.</h3>";
     }
-
-    document.getElementById("result").innerHTML = `
-        <h2>🔍 Search Result</h2>
-        <p><strong>আপনি সার্চ করেছেন:</strong> ${input}</p>
-        <p>🚧 লোকেশন ডাটাবেস যুক্ত করা হচ্ছে...</p>
-    `;
 }
