@@ -2,19 +2,24 @@ function searchLocation() {
     const input = document.getElementById("searchInput").value.trim().toLowerCase();
     const result = document.getElementById("result");
 
-    const found = locations.find(item =>
-        item.area.toLowerCase() === input
-    );
+    if (input === "") {
+        result.innerHTML = "<p>অনুগ্রহ করে একটি এলাকার নাম লিখুন।</p>";
+        return;
+    }
+
+    const found = locations.find(function(item) {
+        return item.area.toLowerCase() === input;
+    });
 
     if (found) {
         result.innerHTML = `
-            <h3>Search Result</h3>
-            <p><b>Area:</b> ${found.area}</p>
-            <p><b>Thana:</b> ${found.thana}</p>
-            <p><b>District:</b> ${found.district}</p>
-            <p><b>Division:</b> ${found.division}</p>
+            <h2>✅ Search Result</h2>
+            <p><strong>Area:</strong> ${found.area}</p>
+            <p><strong>Thana:</strong> ${found.thana}</p>
+            <p><strong>District:</strong> ${found.district}</p>
+            <p><strong>Division:</strong> ${found.division}</p>
         `;
     } else {
-        result.innerHTML = "<h3>❌ Location not found.</h3>";
+        result.innerHTML = "<h2>❌ Location not found</h2>";
     }
 }
