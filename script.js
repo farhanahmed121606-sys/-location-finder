@@ -2,14 +2,17 @@ function searchLocation() {
     const input = document.getElementById("searchInput").value.trim().toLowerCase();
     const result = document.getElementById("result");
 
-    if (input === "") {
-        result.innerHTML = "<p>অনুগ্রহ করে একটি এলাকার নাম লিখুন।</p>";
+    if (!input) {
+        result.innerHTML = `
+            <h2>⚠️ লিখুন</h2>
+            <p>অনুগ্রহ করে একটি এলাকার নাম লিখুন।</p>
+        `;
         return;
     }
 
-    const found = locations.find(function(item) {
-        return item.area.toLowerCase() === input;
-    });
+    const found = locations.find(item =>
+        item.area.toLowerCase().includes(input)
+    );
 
     if (found) {
         result.innerHTML = `
@@ -20,6 +23,9 @@ function searchLocation() {
             <p><strong>Division:</strong> ${found.division}</p>
         `;
     } else {
-        result.innerHTML = "<h2>❌ Location not found</h2>";
+        result.innerHTML = `
+            <h2>❌ Location Not Found</h2>
+            <p>"${input}" নামে কোনো এলাকা পাওয়া যায়নি।</p>
+        `;
     }
 }
