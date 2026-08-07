@@ -1,54 +1,108 @@
 let locations = [];
 
-// JSON থেকে ডেটা লোড
+// Load JSON Data
 fetch("locations.json")
-  .then(response => response.json())
-  .then(data => {
-    locations = data;
-  })
-  .catch(error => {
-    console.error("Data Load Error:", error);
-  });
+.then(response => response.json())
+.then(data => {
 
-function searchLocation() {
+    locations = data;
+
+    const suggestionList = document.getElementById("suggestions");
+
+    data.forEach(item => {
+
+        const option = document.createElement("option");
+
+        option.value = item.area;
+
+        suggestionList.appendChild(option);
+
+    });
+
+})
+.catch(error => {
+
+    console.log(error);
+
+});
+
+function searchLocation(){
 
     const input = document.getElementById("searchInput").value.trim().toLowerCase();
 
     const result = document.getElementById("result");
 
-    if(input === ""){
-        result.innerHTML = "<h3>⚠️ Please enter an area name.</h3>";
+    if(input==""){
+
+        result.innerHTML=`
+        <div class="card">
+        <h2>⚠️ লিখে সার্চ করুন</h2>
+        </div>
+        `;
+
         return;
+
     }
 
     const found = locations.find(item =>
+
         item.area.toLowerCase().includes(input) ||
+
         item.thana.toLowerCase().includes(input) ||
-        item.district.toLowerCase().includes(input)
+
+        item.district.toLowerCase().includes(input) ||
+
+        item.division.toLowerCase().includes(input)
+
     );
 
     if(found){
 
-        result.innerHTML = `
+        result.innerHTML=`
+
         <div class="card">
-            <h2>📍 ${found.area}</h2>
 
-            <p><b>🏘️ Thana:</b> ${found.thana}</p>
+        <h2>📍 ${found.area}</h2>
 
-            <p><b>🏙️ District:</b> ${found.district}</p>
+        <hr>
 
-            <p><b>🌍 Division:</b> ${found.division}</p>
+        <p><strong>🏠 Area :</strong> ${found.area}</p>
+
+        <p><strong>🏘️ Thana :</strong> ${found.thana}</p>
+
+        <p><strong>🏙️ District :</strong> ${found.district}</p>
+
+        <p><strong>🌍 Division :</strong> ${found.division}</p>
+
         </div>
+
         `;
 
-    }else{
+    }
 
-        result.innerHTML = `
+    else{
+
+        result.innerHTML=`
+
         <div class="card">
-            <h2>❌ Location Not Found</h2>
+
+        <h2>❌ কোনো তথ্য পাওয়া যায়নি</h2>
+
         </div>
+
         `;
 
     }
 
 }
+
+// Enter Press Search
+document.getElementById("searchInput").addEventListener("keypress",function(e){
+
+    if(e.key==="Enter"){
+
+        searchLocation();
+
+    }
+
+});
